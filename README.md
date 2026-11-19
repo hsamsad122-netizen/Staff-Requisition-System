@@ -1,5 +1,22 @@
+## My Development Journey and Git Commits
 
-# Staff Requisition System
+## Commit 1 – Requisition System and Unit Tests
+What I changed: I created the Python requisition system and added five unit tests.
+Why: I needed to build the main program and check that it worked correctly.
+Design principles: Encapsulation and Separation of Concerns. I used a class to organise requisition information and kept testing in a separate file.
+
+## Commit 2 – README Documentation
+What I changed: I added README.md with project details and instructions.
+Why: To help others understand and run my program.
+Design principles: Maintainability and clear documentation.
+
+## Commit 3 – Testing Documentation
+What I changed: I added TESTING.md to explain the unit tests.
+Why: To show how I tested my program and how others can repeat the tests.
+Design principles: Separation of Concerns and maintainability.
+
+
+#Staff Requisition System
 
 ## About This Project
 This is my Python Assessment 2 project. I created a requisition system to manage staff requests for items.
