@@ -1,12 +1,13 @@
 
 from datetime import datetime
+from math import isfinite
 
 # Staff Requisition System
 
 class Requisition:
     next_id = 10001
     all_requests = []
-
+ 
     def __init__(self, date, staff_id, staff_name):
         self.date = date
         self.staff_id = staff_id
@@ -24,25 +25,31 @@ class Requisition:
     # Add items and calculate the total
     def add_requisition(self, items):
         self.items = items
+        self.total = 0
 
         for item, price in items:
-            self.total += price
+            self.total += float(price)
 
         self.total = round(self.total, 2)
         self.approve_requisition()
         return self.total
 
+    # Return the total amount
+    def requisitions_details(self):
+        return self.total
+
     # Automatically approve requests below $500
     def approve_requisition(self):
-        if self.total < 500:
+        if self.requisitions_details() < 500:
             self.status = "Approved"
             self.approval_reference = (
                 self.staff_id + str(self.requisition_id)[-3:]
             )
         else:
             self.status = "Pending"
+            self.approval_reference = "Not available"
 
-    # Manager approves or rejects pending requests
+    # Manager responds to pending requests
     def respond_requisition(self, decision):
         if self.status != "Pending":
             print("This request is already processed.")
@@ -53,8 +60,15 @@ class Requisition:
             self.approval_reference = (
                 self.staff_id + str(self.requisition_id)[-3:]
             )
+
         elif decision == "no":
             self.status = "Not approved"
+            self.approval_reference = "Not available"
+
+        elif decision == "pending":
+            self.status = "Pending"
+            self.approval_reference = "Not available"
+
         else:
             print("Invalid decision.")
 
@@ -63,19 +77,23 @@ class Requisition:
         print("\n-----------------------------")
         print("Date:", self.date)
         print("Requisition ID:", self.requisition_id)
-        print("Staff ID:", self.staff_id)
+        print("Staff IDD:", self.staff_id)
         print("Staff Name:", self.staff_name)
         print(f"Total: ${self.total:.2f}")
         print("Status:", self.status)
-        print("Approval Reference:", self.approval_reference)
+        print("Approval Reference Number:", self.approval_reference)
 
     # Display all requisitions
     @classmethod
     def display_requisitions(cls):
+        if not cls.all_requests:
+            print("No requisitions have been submitted.")
+            return
+
         for request in cls.all_requests:
             request.display_requisition()
 
-    # Display statistics
+    # Display and return statistics
     @classmethod
     def requisition_statistics(cls):
         approved = 0
@@ -85,8 +103,10 @@ class Requisition:
         for request in cls.all_requests:
             if request.status == "Approved":
                 approved += 1
+
             elif request.status == "Pending":
                 pending += 1
+
             elif request.status == "Not approved":
                 rejected += 1
 
@@ -96,13 +116,21 @@ class Requisition:
         print("Pending:", pending)
         print("Not approved:", rejected)
 
+        return {
+            "submitted": len(cls.all_requests),
+            "approved": approved,
+            "pending": pending,
+            "not_approved": rejected
+        }
+
 
 # Enter staff details and requested items
 def submit_request():
-    date = input("Enter date (DD/MM/YYYY): ")
+    date = input("Enter date (DD/MM/YYYY): ").strip()
 
     try:
         datetime.strptime(date, "%d/%m/%Y")
+
     except ValueError:
         print("Please enter a valid date.")
         return
@@ -125,19 +153,28 @@ def submit_request():
 
         try:
             price = float(input("Enter item price: $"))
+
         except ValueError:
             print("Please enter a valid price.")
             continue
 
-        if price < 0:
-            print("Price cannot be negative.")
+        if not isfinite(price) or price <= 0:
+            print("Price must be a valid number greater than zero.")
             continue
 
         items.append((item_name, price))
 
-        answer = input("Add another item? (yes/no): ").lower()
+        while True:
+            answer = input(
+                "Add another item? (yes/no): "
+            ).strip().lower()
 
-        if answer != "yes":
+            if answer in ["yes", "no"]:
+                break
+
+            print("Please enter yes or no.")
+
+        if answer == "no":
             break
 
     request = Requisition(date, staff_id, staff_name)
@@ -162,56 +199,77 @@ def manager_decision():
     for request in pending_requests:
         request.display_requisition()
 
-        answer = input("Approve this request? (yes/no): ").lower()
-        request.respond_requisition(answer)
+        while True:
+            answer = input(
+                "Approve this request? (yes/no/pending): "
+            ).strip().lower()
+
+            if answer in ["yes", "no", "pending"]:
+                request.respond_requisition(answer)
+                break
+
+            print("Please enter yes, no or pending.")
+
+        print("Updated Status:", request.status)
 
 
 # Test the program using five staff requisitions
 def test_five_requisitions():
 
-    # Clear previous requests before running the examples
+    # Save existing requests before testing
+    original_requests = Requisition.all_requests
+    original_next_id = Requisition.next_id
+
+    # Create separate data for testing
     Requisition.all_requests = []
     Requisition.next_id = 10001
 
-    examples = [
-        ("03/04/2024", "FN19", "John Paul",
-         [("Mouse", 50), ("Keyboard", 80)]),
+    try:
+        examples = [
+            ("03/04/2024", "FN19", "John Paul",
+             [("Mouse", 50), ("Keyboard", 80)]),
 
-        ("05/04/2024", "FN20", "Tracy Brown",
-         [("Monitor", 350), ("Office chair", 250)]),
+            ("05/04/2024", "FN20", "Tracy Brown",
+             [("Monitor", 350), ("Office chair", 250)]),
 
-        ("07/05/2024", "FN15", "Emma Wellington",
-         [("Laptop", 1200)]),
+            ("07/05/2024", "FN15", "Emma Wellington",
+             [("Laptop", 1200)]),
 
-        ("03/05/2024", "FN02", "Catlin White",
-         [("Printer", 490)]),
+            ("03/05/2024", "FN02", "Catlin White",
+             [("Printer", 490)]),
 
-        ("10/05/2024", "FN25", "David Smith",
-         [("Desk", 500)])
-    ]
+            ("10/05/2024", "FN25", "David Smith",
+             [("Desk", 500)])
+        ]
 
-    requests = []
+        requests = []
 
-    # Create all five requisitions
-    for date, staff_id, staff_name, items in examples:
-        request = Requisition(date, staff_id, staff_name)
-        request.add_requisition(items)
-        requests.append(request)
+        # Create all five requisitions
+        for date, staff_id, staff_name, items in examples:
+            request = Requisition(date, staff_id, staff_name)
+            request.add_requisition(items)
+            requests.append(request)
 
-    # Display details before manager decisions
-    print("\n===== BEFORE MANAGER RESPONSE =====")
-    Requisition.display_requisitions()
-    Requisition.requisition_statistics()
+        # Display details before manager decisions
+        print("\n===== BEFORE MANAGER RESPONSE =====")
+        Requisition.display_requisitions()
+        Requisition.requisition_statistics()
 
-    # Manager approves Tracy and rejects Emma
-    # David's request remains pending
-    requests[1].respond_requisition("yes")
-    requests[2].respond_requisition("no")
+        # Manager approves Tracy and rejects Emma
+        # David's request remains pending
+        requests[1].respond_requisition("yes")
+        requests[2].respond_requisition("no")
+        requests[4].respond_requisition("pending")
 
-    # Display details after manager decisions
-    print("\n===== AFTER MANAGER RESPONSE =====")
-    Requisition.display_requisitions()
-    Requisition.requisition_statistics()
+        # Display details after manager decisions
+        print("\n===== AFTER MANAGER RESPONSE =====")
+        Requisition.display_requisitions()
+        Requisition.requisition_statistics()
+
+    finally:
+        # Restore existing requests after testing
+        Requisition.all_requests = original_requests
+        Requisition.next_id = original_next_id
 
 
 # Main menu
@@ -225,7 +283,7 @@ def main():
         print("5. Run Five Example Requisitions")
         print("6. Exit")
 
-        choice = input("Choose an option (1-6): ")
+        choice = input("Choose an option (1-6): ").strip()
 
         if choice == "1":
             submit_request()
