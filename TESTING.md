@@ -1,37 +1,23 @@
+# Requisition System
 
-# Requisition System - Testing
+What is required for testing.What are my test requirements?
 
-## About Testing
-
-I created a test file to check whether my Python requisition system works correctly.
-
-## Test File
-
-The testing file is called `test_requisition.py`.
-
-## What I Need to Test
-
-1. Check that each requisition gets a unique ID.
-2. Check that staff details are stored correctly.
-3. Check that item prices are added correctly.
-4. Check that the approval status follows the required rules.
-5. Check that the requisition details display correctly.
-6. Check that the requisition statistics are calculated correctly.
-
-## How to Run the Tests
-
-Open the terminal in VS Code and type:
-
-    python -m unittest test_requisition.py
-
-Press Enter to run the tests.
+1) Ensure that each requisition is assigned a different ID.
+2. Ensure Staff information is stored properly.
+3. Ensure item prices are properly totalled.
+4. Ensure that the approval status complies with the rules and regulations.
+5. Test manager responses to ensure they are functioning properly.
+6. Make sure the details of the requisition are showing.
+7. Verify the calculation of requisition statistics are correct.
 
 ## Expected Result
 
-If all tests pass, Python should display `OK`.
+Option 5 should give me 5 requisitions showing the correct totals, as well as whether the requisition was approved or not and statistics.
 
-If a test fails, I need to check the error message, correct the code and run the tests again.
+When I encountered one of the errors, I need to check the code, correct the error and re-run the program.
 
 ## What I Learned
 
-Testing helps me find mistakes in my code. It also helps me check that the program works correctly after making changes.
+Testing is a way to make sure that my code is correct. Secondly it helps me verify that the program does work when I modify it.
+
+
