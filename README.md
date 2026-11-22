@@ -1,39 +1,25 @@
-## My Development Journey and Git Commits
-
-## Commit 1 – Requisition System and Unit Tests
-What I changed: I created the Python requisition system and added five unit tests.
-Why: I needed to build the main program and check that it worked correctly.
-Design principles: Encapsulation and Separation of Concerns. I used a class to organise requisition information and kept testing in a separate file.
-
-## Commit 2 – README Documentation
-What I changed: I added README.md with project details and instructions.
-Why: To help others understand and run my program.
-Design principles: Maintainability and clear documentation.
-
-## Commit 3 – Testing Documentation
-What I changed: I added TESTING.md to explain the unit tests.
-Why: To show how I tested my program and how others can repeat the tests.
-Design principles: Separation of Concerns and maintainability.
-
-
-#Staff Requisition System
+# Staff Requisition System
 
 ## About This Project
-This is my Python Assessment 2 project. I created a requisition system to manage staff requests for items.
+
+This is a work from my python Assessment 2. Designed an OOP program to track staff requests and their processing.
 
 ## Features
-- Stores staff details and requisition information.
-- Gives each requisition a unique ID.
-- Calculates the total cost of requested items.
-- Checks whether a requisition is approved, pending, or not approved.
-- Displays requisition details and statistics.
+
+- Keeps records of employee information and produces requisition ID numbers.
+- Adds and subtracts money amounts
+- Approves requests of less than $500 automatically.
+- Allows managers to approve, reject or leave requests pending.
+- Shows order request information and statistics.
 
 ## Project Files
-- `requisition_system.py` - Main Python program.
-- `test_requisition.py` - File used to test the program.
-- `.gitignore` - Ignores temporary Python files.
+
+There is one major Python program file: ‘requisition_system.py’.
+- `.gitignore` – Temporarily skips over certain files.
+- `README.md` – Project information.
 
 ## How to Run
+
 Open the project folder in VS Code and run:
 
 ```bash
@@ -41,11 +27,33 @@ python requisition_system.py
 ```
 
 ## Testing
-To run the tests, use:
 
-```bash
-python -m unittest test_requisition.py
-```
+View Statistics before/after manager's response for a test of five different requisitions, select option 5. The program also facilitates for doing manual testing.
+
+How, when, and what I learned, developed, built and published on my own and in the open-source world.
+
+1. Set up the requisition system and the unit tests.Set up for Commit 1 - Requisition System and Unit Tests.
+
+A primary program was developed and unit tests were inserted to insure its operation.
+
+Design principles – Encapsulation and Separation of Concerns.
+
+### Commit 2 – README Documentation
+
+Tried to clarify the programme by adding project information and instructions.
+
+**Design principle:** Maintainability.
+
+### Commit 3 – Testing Documentation
+
+Created testing documentation to make it easier for others to understand how the program was tested.
+
+Design principles: Separation of Concerns and Maintainability.
+
+### Latest Improvements
+
+Made manager answers and input validations better, added in statistics and built in tests.
 
 ## What I Learned
-While working on this project, I learned how to use Python classes, methods, lists, and conditions. I also practised testing my code and using Git to save changes.
+
+Through this project, I learned how to use Python classes, objects, methods and conditions. Plus, I gained proficiencies in some debugging techniques and was able to learn how to use GitHub to handle my code.
